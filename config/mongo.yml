@@ -12,6 +12,7 @@ test:
 
 # set these environment variables on your prod server
 production:
+  <<: *defaults
   host: <%= ENV['MONGO_HOST'] %>
   port: <%= ENV['MONGO_PORT'] %>
   database: <%= ENV['MONGO_DB'] %>
