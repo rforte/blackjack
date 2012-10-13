@@ -74,7 +74,7 @@ class Game
     self.outcome = @rule_engine.perform(cmd, self)
   end
   
-  def start_game    
+  def start_game
     #
     #  Deal initial hands
     #
