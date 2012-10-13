@@ -4,7 +4,7 @@ GameApi::Application.routes.draw do
       get 'dummy'
       get 'new_game' => 'game#create', :defaults => { :format => :json }
       get 'status/:id' => 'game#show', :defaults => { :format => :json }
-      post 'game/:id' => 'game#update'
+      post 'game/:id' => 'game#update', :defaults => { :format => :json }
     end
   end
   

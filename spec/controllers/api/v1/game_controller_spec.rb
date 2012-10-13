@@ -9,13 +9,13 @@ describe Api::V1::GameController do
   end
   
   it "should start a new game" do
-    get :update
-    response.code.should eq(200)
+    get :create, :format => :json
+    response.response_code.should eq(200)
   end
   
   it "should show status of a game" do
-    get :show, {:id => @game.id}
-    response.code.should eq(200)
+    get :show, :id => @game.id, :format => :json
+    response.response_code.should eq(200)
   end
   
   it "should tell user game is over if they try to hit or stand when the game is over" do

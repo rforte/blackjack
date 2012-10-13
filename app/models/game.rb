@@ -5,7 +5,7 @@ class Game
   before_save :update_state
   before_create :bootstrap
   
-  key :deck, Array
+  key :deck, Array                                      # i don't really need to store the entire deck. really only need the first N.
   key :player_hand, Array, :alias => :ph
   key :dealer_hand, Array, :alias => :dh
   key :playing, Boolean, :alias => :p                   # false if game over -- could implicitly determine
@@ -15,14 +15,15 @@ class Game
   key :seed, Integer, :alias => :s                      # in case we want to reproduce a hand history assuming identical rng implementations
   key :outcome, Hash, :alias => :o                      # cache game state
   
-  #
   #  Dealer BJ seed 1349999491
-  #   
   
-  def self.load(game_id)
+  #
+  #  Pull data out of the DB and bootstrap the game
+  #
+  def self.retrieve(game_id)
     g = Game.find( game_id )
     raise GameException.new(GAME_NOT_FOUND) if g.nil?
-    g.bootstrap    
+    g.bootstrap
   end
   
   #
@@ -62,6 +63,8 @@ class Game
       self.playing = self.outcome[:winner] == :none
       self.deck = @shoe.to_a
     end
+    
+    self
   end
   
   private
@@ -80,7 +83,10 @@ class Game
       deal_card_to_dealer
     end
   end
-  
+
+  #
+  #  For serializing back to the db
+  #
   def update_state
     self.deck = @shoe.to_a if @shoe
   end

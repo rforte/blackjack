@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Game do
-  pending "add some examples to (or delete) #{__FILE__}"
   let(:game_opt) { {:num_decks => 1, :rules => RuleFactory::HIT_AND_STAND_ONLY, :dealer_type => DealerFactory::DEALER_STANDS_ON_SOFT_17} }
   @re = RuleEngine.new
   

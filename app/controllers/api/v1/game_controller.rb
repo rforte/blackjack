@@ -9,15 +9,15 @@ class Api::V1::GameController < ApplicationController
   end
 
   def show
-    g = Game.load( params[:id] )
+    g = Game.retrieve( params[:id] )
     respond_with GamePresenter.new(g)
   end
   
   def update
-    g = Game.load( params[:id] )
-    error(GAME_ALREADY_COMPLETED) and return unless g.playing
-    g.play!( params[:cmd] )
-    respond_with GamePresenter.new(g)
+    g = Game.retrieve( params[:id] )
+    #error(GAME_ALREADY_COMPLETED) and return unless g.playing # instead of returning an error return game state
+    g.play!( params[:cmd] ) if g.playing
+    render :json => GamePresenter.new(g).to_json
   end
   
   private

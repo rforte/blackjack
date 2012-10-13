@@ -1,4 +1,6 @@
 class RuleEngine
+  include Api::V1::GameErrors
+  
   def solve(game)
     solve_hands(game.player_hand, game.dealer_hand, game.playing)
   end
@@ -36,7 +38,6 @@ class RuleEngine
   #  The rules only allow hit and stand for this version
   #
   def perform(cmd, game)
-    puts "*** PERFORM ***"
     case cmd
     when :hit
       game.deal_card_to_player
@@ -48,7 +49,6 @@ class RuleEngine
     
     outcome = solve(game)
     game.playing = false unless outcome[:winner] == :none
-    puts "*** LEAVING PERFORM ***"
     
     outcome
   end
