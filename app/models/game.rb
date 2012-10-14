@@ -5,7 +5,9 @@ class Game
   before_save :update_state
   before_create :bootstrap
   
-  key :deck, Array                                      # i don't really need to store the entire deck. really only need the first N.
+  #  XXX - Probably good to have a transaction id/log as well for db consistency and audit'ing but not for this version
+  key :deck, Array                                      # i don't really need to store the entire deck. 
+                                                        # really only need the first N (todo: next version).
   key :player_hand, Array, :alias => :ph
   key :dealer_hand, Array, :alias => :dh
   key :playing, Boolean, :alias => :p                   # false if game over -- could implicitly determine
@@ -58,7 +60,7 @@ class Game
     @rule_engine = RuleFactory.create( self.rules || RuleFactory::HIT_AND_STAND_ONLY )
     if new_record?
       self.playing = true
-      start_game if player_hand.empty? && dealer_hand.empty?
+      start_game if player_hand.empty? && dealer_hand.empty? # really only need to check this when i want to setup hands in the debugger for testing
       self.outcome = @rule_engine.solve(self)
       self.playing = self.outcome[:winner] == :none
       self.deck = @shoe.to_a
